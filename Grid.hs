@@ -7,20 +7,21 @@ import Graphics.UI.GLUT
 data Grid = Grid { r :: GLfloat, c :: GLfloat, s :: GLfloat }
 
 left :: Grid -> GLfloat
-left g = (c g) * (s g)
+left g = (c g) * (s g) + (s g) / 5.0
 
 right :: Grid -> GLfloat
-right g = (c g + 1) * (s g)
+right g = (c g + 1) * (s g) - (s g) / 5.0
 
 top :: Grid -> GLfloat
-top g = (r g) * (s g)
+top g = (r g) * (s g) + (s g) / 5.0
 
 bottom :: Grid -> GLfloat
-bottom g = (r g + 1) * (s g)
+bottom g = (r g + 1) * (s g) - (s g) / 5.0
 
 -- GLUT uses some kind of unit coordinate system. Weird!
 renderGrid :: Grid -> IO ()
-renderGrid g = renderPrimitive Quads $ do
+renderGrid g = do
+  renderPrimitive Quads $ do
   color $ Color3 0 0 (1 :: GLfloat)
   vertex $ Vertex2 (-1 + 2 * (left g)) (1 - 2 * (top g))
   vertex $ Vertex2 (-1 + 2 * (right g)) (1 - 2 * (top g))

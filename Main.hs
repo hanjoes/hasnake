@@ -10,7 +10,7 @@ import Callbacks
 -- Window size.
 ws = 1000
 -- Grid size should always divide the window size.
-gs = 100
+gs = 10
 
 
 main :: IO()
