@@ -6,10 +6,10 @@ import Data.IORef
 import Grid
 
 -- Takes ng as number of total grids to render.
-display :: Int -> GLsizei -> IO ()
-display ng s = do
+display :: GLfloat -> GLfloat -> IO ()
+display ws s = do
   clear [ColorBuffer]
-  renderGrids ng s
+  renderGrids ws s
   flush
 
 keyboardMouse :: KeyboardMouseCallback
