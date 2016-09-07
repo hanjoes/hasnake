@@ -10,6 +10,7 @@ data Grid = Grid { r :: GLfloat, c :: GLfloat, s :: GLfloat }
 ps :: GLfloat
 ps = 8.0
 
+-- Border of the grid.
 left :: Grid -> GLfloat
 left g = -1 + 2 * ((c g) * (s g) + (s g) / ps)
 
@@ -32,6 +33,7 @@ renderGrid g = do
   vertex $ Vertex2 (right g) (bottom g)
   vertex $ Vertex2 (left g) (bottom g)
 
+-- Render all grids given window size and grid scale.
 renderGrids :: GLfloat -> GLfloat -> IO ()
 renderGrids ws s
   | ws <= 0 = return ()

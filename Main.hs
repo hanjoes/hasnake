@@ -4,6 +4,7 @@ import Data.IORef
 
 -- User defined
 import Callbacks
+import qualified Snake as S
 
 -- Constants
 
@@ -20,10 +21,15 @@ main = do
   initialWindowSize $= Size ws ws
   win <- createWindow "Hasnake"
   -- reshapeCallback $= Just reshape
-  -- len <- newIORef 4.0
-  -- pos <- newIORef (0.0, 0.0)
   displayCallback $= display (fromIntegral ws) (fromIntegral gs)
   keyboardMouseCallback $= Just keyboardMouse
-  idleCallback $= Just idle
-  print $ (fromIntegral gs) / (fromIntegral ws)
+
+  -- initialize snake
+  let snake = S.Snake {
+        S.body = [(0, 0), ((fromIntegral gs) / (fromIntegral ws), 0)],
+        S.dir = S.Right,
+        S.clr = Color3 1 1 (0 :: GLfloat)
+        }
+
+  idleCallback $= (Just $ idle snake)
   mainLoop

@@ -4,6 +4,7 @@ import Graphics.UI.GLUT
 import Data.IORef
 
 import Grid
+import Snake
 
 -- Takes ng as number of total grids to render.
 display :: GLfloat -> GLfloat -> IO ()
@@ -15,5 +16,5 @@ display ws s = do
 keyboardMouse :: KeyboardMouseCallback
 keyboardMouse _ _ _ _ = return ()
 
-idle :: IO ()
-idle = return ()
+idle :: Snake -> IO ()
+idle _ = return ()
