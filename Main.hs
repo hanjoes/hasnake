@@ -20,16 +20,17 @@ main = do
   -- initialDisplayMode $= [DoubleBuffered]
   initialWindowSize $= Size ws ws
   win <- createWindow "Hasnake"
-  -- reshapeCallback $= Just reshape
-  displayCallback $= display (fromIntegral ws) (fromIntegral gs)
-  keyboardMouseCallback $= Just keyboardMouse
 
   -- initialize snake
-  let snake = S.Snake {
+  snake <- newIORef $ S.Snake {
         S.body = [(0, 0), ((fromIntegral gs) / (fromIntegral ws), 0)],
         S.dir = S.Right,
-        S.clr = Color3 1 1 (0 :: GLfloat)
+        S.clr = Color3 1 0 (0 :: GLfloat)
         }
+
+  -- reshapeCallback $= Just reshape
+  displayCallback $= display (fromIntegral ws) (fromIntegral gs) snake
+  keyboardMouseCallback $= Just keyboardMouse
 
   idleCallback $= (Just $ idle snake)
   mainLoop

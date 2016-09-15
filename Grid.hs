@@ -1,6 +1,9 @@
 module Grid where
 
 import Graphics.UI.GLUT
+import Data.IORef
+
+import qualified Snake as S
 
 -- We only need row, column, size to define a grid.
 -- Note: the row and column are all starting from 0.
@@ -34,10 +37,12 @@ renderGrid g = do
   vertex $ Vertex2 (left g) (bottom g)
 
 -- Render all grids given window size and grid scale.
-renderGrids :: GLfloat -> GLfloat -> IO ()
-renderGrids ws s
+renderGrids :: GLfloat -> GLfloat -> IORef S.Snake -> IO ()
+renderGrids ws s snake
   | ws <= 0 = return ()
   | otherwise = do
+      snake' <- readIORef snake
+      let body = S.body snake'
       sequence_ [renderGrid $ Grid { r = r, c = c, s = scale } | r <- [0..ng-1], c <- [0..ng-1]]
   where ng = ws / s
         scale = s / ws
