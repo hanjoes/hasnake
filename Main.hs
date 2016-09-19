@@ -1,9 +1,11 @@
 -- HOpenGL
 import Graphics.UI.GLUT
 import Data.IORef
+import Data.Time.Clock
 
 -- User defined
 import Callbacks
+import Game
 import qualified Snake as S
 
 -- Constants
@@ -23,14 +25,21 @@ main = do
 
   -- initialize snake
   snake <- newIORef $ S.Snake {
-        S.body = [(0, 0), ((fromIntegral gs) / (fromIntegral ws), 0)],
+        S.body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
         S.dir = S.Right,
-        S.clr = Color3 1 0 (0 :: GLfloat)
-        }
+        S.bodyColor = Color3 1 0 (0 :: GLfloat)}
 
+  -- initialize game
+  currentTime <- getCurrentTime
+  game <- newIORef $ Game {
+    defaultSpeed = 1,
+    lastUpdateTime = currentTime}
+
+  -- register callbacks
   -- reshapeCallback $= Just reshape
   displayCallback $= display (fromIntegral ws) (fromIntegral gs) snake
   keyboardMouseCallback $= Just keyboardMouse
-
-  idleCallback $= (Just $ idle snake)
+  idleCallback $= (Just $ idle snake game)
   mainLoop
+
+  where ng = fromIntegral $ ws `div` gs
