@@ -23,17 +23,18 @@ keyboardMouse _ _ _ _ = return ()
 -- idle callback
 idle :: IORef S.Snake -> IORef Game -> IO ()
 idle s g = do
-  snake <- readIORef s
-  game <- readIORef g
+  snake <- get s
+  game <- get g
   update <- shouldUpdate game
   currentTime <- getCurrentTime
   case update of
     True -> do
-      writeIORef s $ S.update snake
-      writeIORef g $ Game {
+      s $= S.update snake
+      g $= Game {
         defaultSpeed = 1,
         lastUpdateTime = currentTime}
     False -> return ()
+  postRedisplay Nothing
 
 -- Helper function decide whether we update.
 shouldUpdate :: Game -> IO Bool

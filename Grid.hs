@@ -53,7 +53,7 @@ renderGrids :: GLfloat -> GLfloat -> IORef S.Snake -> IO ()
 renderGrids ws s snake
   | ws <= 0 = return ()
   | otherwise = do
-      snake' <- readIORef snake
+      snake' <- get snake
       let body = S.body snake'
       sequence_ [renderGrid (Grid { r = r, c = c, s = scale }) snake' | r <- [0..ng-1], c <- [0..ng-1]]
   where ng = ws / s
