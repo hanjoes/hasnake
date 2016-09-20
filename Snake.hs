@@ -1,5 +1,5 @@
 -- module Snake (Snake (body, dir, clr), Direction, SCoord) where
-module Snake (Snake (..), SCoord, Direction (..), update) where
+module Snake (Snake (..), SCoord, Direction (..), update, turnSnake) where
 
 import Graphics.UI.GLUT
 
@@ -11,9 +11,11 @@ data Snake = Snake { body :: [SCoord], dir :: Direction, bodyColor :: Color3 GLf
 
 -- After eaten a bean, update the snake
 update :: Snake -> Snake
-update s = Snake { body = updateBody (body s) (dir s),
-                   dir = dir s,
-                   bodyColor = bodyColor s}
+update s = s { body = updateBody (body s) (dir s) }
+
+-- functions used to turn the snake
+turnSnake :: Direction -> Snake -> Snake
+turnSnake dir s = s { dir = dir }
 
 -- Helper functions to update coordinations.
 shiftLeft :: SCoord -> SCoord

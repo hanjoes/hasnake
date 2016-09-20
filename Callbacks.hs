@@ -17,8 +17,15 @@ display ws s snake = do
   flush
 
 -- keyboard and mouse callback
-keyboardMouse :: KeyboardMouseCallback
-keyboardMouse _ _ _ _ = return ()
+keyboardMouse :: IORef S.Snake -> KeyboardMouseCallback
+keyboardMouse s key Down _ _ = do
+  snake <- get s
+  s $= case key of
+    (SpecialKey KeyUp) -> S.turnSnake S.Up snake
+    (SpecialKey KeyDown) -> S.turnSnake S.Down snake
+    (SpecialKey KeyLeft) -> S.turnSnake S.Left snake
+    (SpecialKey KeyRight) -> S.turnSnake S.Right snake
+keyboardMouse _ _ _ _ _ = return ()
 
 -- idle callback
 idle :: IORef S.Snake -> IORef Game -> IO ()

@@ -38,7 +38,7 @@ main = do
   -- register callbacks
   -- reshapeCallback $= Just reshape
   displayCallback $= display (fromIntegral ws) (fromIntegral gs) snake
-  keyboardMouseCallback $= Just keyboardMouse
+  keyboardMouseCallback $= (Just $ keyboardMouse snake)
   idleCallback $= (Just $ idle snake game)
   mainLoop
 
