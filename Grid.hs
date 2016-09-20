@@ -15,7 +15,7 @@ ps = 8.0
 
 -- Grid color
 gridColor :: Color3 GLfloat
-gridColor = Color3 0 0 1
+gridColor = Color3 0.97 0.89 0.72
 
 -- Border of the grid.
 left :: Grid -> GLfloat
