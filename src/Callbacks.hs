@@ -7,40 +7,45 @@ import Data.Time.Clock
 import Grid
 import Game
 import Utils
-
-import qualified Snake as S
+import Snake
 
 -- Takes ng as number of total grids to render.
-display :: GLfloat -> GLfloat -> IORef S.Snake -> IO ()
-display ws s snake = do
+display :: GLfloat -> GLfloat -> IORef Game -> IO ()
+display ws s game = do
   clear [ColorBuffer]
-  renderGrids ws s snake
+  g <- get game
+  renderGrids ws s $ hasnake g
   flush
 
 -- keyboard and mouse callback
-keyboardMouse :: IORef S.Snake -> KeyboardMouseCallback
-keyboardMouse s key Down _ _ = do
-  snake <- get s
-  s $= case key of
-    (SpecialKey KeyUp) -> S.turnSnake HSUp snake
-    (SpecialKey KeyDown) -> S.turnSnake HSDown snake
-    (SpecialKey KeyLeft) -> S.turnSnake HSLeft snake
-    (SpecialKey KeyRight) -> S.turnSnake HSRight snake
+keyboardMouse :: IORef Game -> KeyboardMouseCallback
+keyboardMouse g key Down _ _ = do
+  game <- get g
+  let snake = hasnake game
+  g $= game {
+    hasnake = case key of
+      (SpecialKey KeyUp) -> turnSnake HSUp snake
+      (SpecialKey KeyDown) -> turnSnake HSDown snake
+      (SpecialKey KeyLeft) -> turnSnake HSLeft snake
+      (SpecialKey KeyRight) -> turnSnake HSRight snake
+  }
 keyboardMouse _ _ _ _ _ = return ()
 
 -- idle callback
-idle :: IORef S.Snake -> IORef Game -> IO ()
-idle s g = do
-  snake <- get s
+idle :: IORef Game -> IO ()
+idle g = do
   game <- get g
-  update <- shouldUpdate game
-  currentTime <- getCurrentTime
-  case update of
+  flag <- shouldUpdate game
+  case flag of
     True -> do
-      s $= S.update snake
-      g $= Game {
+      currentTime <- getCurrentTime
+      let snake' = update $ hasnake game
+      -- update game
+      g $= game {
         defaultSpeed = 1,
-        lastUpdateTime = currentTime}
+        lastUpdateTime = currentTime,
+        hasnake = snake'
+      }
     False -> return ()
   postRedisplay Nothing
 

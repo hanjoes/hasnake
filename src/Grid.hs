@@ -50,12 +50,11 @@ renderGrid g s = do
   vertex $ Vertex2 (left g) (bottom g)
 
 -- Render all grids given window size and grid scale.
-renderGrids :: GLfloat -> GLfloat -> IORef Snake -> IO ()
+renderGrids :: GLfloat -> GLfloat -> Snake -> IO ()
 renderGrids ws s snake
   | ws <= 0 = return ()
   | otherwise = do
-      snake' <- get snake
-      sequence_ [renderGrid (Grid { r = r, c = c, s = scale }) snake' | r <- [0..ng-1], c <- [0..ng-1]]
+      sequence_ [renderGrid (Grid { r = r, c = c, s = scale }) snake | r <- [0..ng-1], c <- [0..ng-1]]
   where ng = ws / s
         scale = s / ws
 

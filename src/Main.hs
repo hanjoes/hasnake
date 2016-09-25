@@ -7,6 +7,7 @@ import Data.Time.Clock
 import Callbacks
 import Game
 import Snake
+import Bean
 import Utils
 
 -- Constants
@@ -25,22 +26,32 @@ main = do
   win <- createWindow "Hasnake"
 
   -- initialize snake
-  snake <- newIORef $ Snake {
-        body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
-        dir = HSRight,
-        bodyColor = Color3 1 0 (0 :: GLfloat)}
+  let snake = Snake {
+    body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
+    dir = HSRight,
+    bodyColor = Color3 1 0 (0 :: GLfloat)
+  }
 
-  -- initialize game
+  -- initialize the first bean
+  let bean = Bean {
+    beanLocation = undefined,
+    beanColor = Color3 0 1 (0 :: GLfloat)
+  }
+
+  -- initialize game (IORef)
   currentTime <- getCurrentTime
   game <- newIORef $ Game {
     defaultSpeed = 1,
-    lastUpdateTime = currentTime}
+    lastUpdateTime = currentTime,
+    hasnake = snake,
+    currentBean = bean
+  }
 
   -- register callbacks
   -- reshapeCallback $= Just reshape
-  displayCallback $= display (fromIntegral ws) (fromIntegral gs) snake
-  keyboardMouseCallback $= (Just $ keyboardMouse snake)
-  idleCallback $= (Just $ idle snake game)
+  displayCallback $= display (fromIntegral ws) (fromIntegral gs) game
+  keyboardMouseCallback $= (Just $ keyboardMouse game)
+  idleCallback $= (Just $ idle game)
   mainLoop
 
   where ng = fromIntegral $ ws `div` gs
