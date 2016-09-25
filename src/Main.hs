@@ -6,7 +6,8 @@ import Data.Time.Clock
 -- User defined
 import Callbacks
 import Game
-import qualified Snake as S
+import Snake
+import Utils
 
 -- Constants
 
@@ -24,10 +25,10 @@ main = do
   win <- createWindow "Hasnake"
 
   -- initialize snake
-  snake <- newIORef $ S.Snake {
-        S.body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
-        S.dir = S.Right,
-        S.bodyColor = Color3 1 0 (0 :: GLfloat)}
+  snake <- newIORef $ Snake {
+        body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
+        dir = HSRight,
+        bodyColor = Color3 1 0 (0 :: GLfloat)}
 
   -- initialize game
   currentTime <- getCurrentTime

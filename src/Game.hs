@@ -5,6 +5,5 @@ import Data.Time.Clock
 
 data Game = Game {
   defaultSpeed :: NominalDiffTime,
-  lastUpdateTime :: UTCTime 
+  lastUpdateTime :: UTCTime
   }
-

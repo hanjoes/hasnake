@@ -6,6 +6,7 @@ import Data.Time.Clock
 
 import Grid
 import Game
+import Utils
 
 import qualified Snake as S
 
@@ -21,10 +22,10 @@ keyboardMouse :: IORef S.Snake -> KeyboardMouseCallback
 keyboardMouse s key Down _ _ = do
   snake <- get s
   s $= case key of
-    (SpecialKey KeyUp) -> S.turnSnake S.Up snake
-    (SpecialKey KeyDown) -> S.turnSnake S.Down snake
-    (SpecialKey KeyLeft) -> S.turnSnake S.Left snake
-    (SpecialKey KeyRight) -> S.turnSnake S.Right snake
+    (SpecialKey KeyUp) -> S.turnSnake HSUp snake
+    (SpecialKey KeyDown) -> S.turnSnake HSDown snake
+    (SpecialKey KeyLeft) -> S.turnSnake HSLeft snake
+    (SpecialKey KeyRight) -> S.turnSnake HSRight snake
 keyboardMouse _ _ _ _ _ = return ()
 
 -- idle callback

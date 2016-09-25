@@ -1,46 +1,44 @@
--- module Snake (Snake (body, dir, clr), Direction, SCoord) where
-module Snake (Snake (..), SCoord, Direction (..), update, turnSnake) where
+-- module Snake (Snake (body, dir, clr), Direction, HasnakePos) where
+module Snake (Snake (..), update, turnSnake) where
 
 import Graphics.UI.GLUT
 
-type SCoord = (GLfloat, GLfloat)
+import Utils
 
-data Direction = Up | Down | Left | Right
-
-data Snake = Snake { body :: [SCoord], dir :: Direction, bodyColor :: Color3 GLfloat }
+data Snake = Snake { body :: [HasnakePos], dir :: HasnakeDir, bodyColor :: Color3 GLfloat }
 
 -- After eaten a bean, update the snake
 update :: Snake -> Snake
 update s = s { body = updateBody (body s) (dir s) }
 
 -- functions used to turn the snake
-turnSnake :: Direction -> Snake -> Snake
+turnSnake :: HasnakeDir -> Snake -> Snake
 turnSnake dir s = s { dir = dir }
 
 -- Helper functions to update coordinations.
-shiftLeft :: SCoord -> SCoord
+shiftLeft :: HasnakePos -> HasnakePos
 shiftLeft (r, c) = (r, c - 1)
 
-shiftRight :: SCoord -> SCoord
+shiftRight :: HasnakePos -> HasnakePos
 shiftRight (r, c) = (r, c + 1)
 
-shiftUp :: SCoord -> SCoord
+shiftUp :: HasnakePos -> HasnakePos
 shiftUp (r, c) = (r - 1, c)
 
-shiftDown :: SCoord -> SCoord
+shiftDown :: HasnakePos -> HasnakePos
 shiftDown (r, c) = (r + 1, c)
 
 -- Helper function to update the whole body.
-updateBody :: [SCoord] -> Direction -> [SCoord]
+updateBody :: [HasnakePos] -> HasnakeDir -> [HasnakePos]
 updateBody [] _ = []
 updateBody (c:cs) dir = updatedHead:(updateBody cs $ lookforDir c cs)
   where updatedHead = case dir of
-          Snake.Up -> shiftUp c
-          Snake.Down -> shiftDown c
-          Snake.Left -> shiftLeft c
-          Snake.Right -> shiftRight c
+          HSUp -> shiftUp c
+          HSDown -> shiftDown c
+          HSLeft -> shiftLeft c
+          HSRight -> shiftRight c
         lookforDir c' cs'
-          | shiftLeft c' `elem` cs'  = Snake.Right
-          | shiftRight c' `elem` cs'  = Snake.Left
-          | shiftUp c' `elem` cs'  = Snake.Down
-          | otherwise = Snake.Up
+          | shiftLeft c' `elem` cs'  = HSRight
+          | shiftRight c' `elem` cs'  = HSLeft
+          | shiftUp c' `elem` cs'  = HSDown
+          | otherwise = HSUp

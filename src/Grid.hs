@@ -3,7 +3,8 @@ module Grid where
 import Graphics.UI.GLUT
 import Data.IORef
 
-import qualified Snake as S
+import Snake
+import Utils
 
 -- We only need row, column, size to define a grid.
 -- Note: the row and column are all starting from 0.
@@ -31,15 +32,15 @@ bottom :: Grid -> GLfloat
 bottom g = 1 - 2 * ((r g + 1) * (s g) - (s g) / ps)
 
 -- Pick color for the snake body.
-pickColor :: Grid -> S.Snake -> Color3 GLfloat
+pickColor :: Grid -> Snake -> Color3 GLfloat
 pickColor g s
-  | gridCoord g `elem` (S.body s) = S.bodyColor s
+  | gridCoord g `elem` (body s) = bodyColor s
   | otherwise = gridColor
-  where gridCoord :: Grid -> S.SCoord
+  where gridCoord :: Grid -> HasnakePos
         gridCoord g = (r g, c g)
 
 -- GLUT uses some kind of unit coordinate system. Weird!
-renderGrid :: Grid -> S.Snake -> IO ()
+renderGrid :: Grid -> Snake -> IO ()
 renderGrid g s = do
   renderPrimitive Quads $ do
   color $ pickColor g s
@@ -49,12 +50,11 @@ renderGrid g s = do
   vertex $ Vertex2 (left g) (bottom g)
 
 -- Render all grids given window size and grid scale.
-renderGrids :: GLfloat -> GLfloat -> IORef S.Snake -> IO ()
+renderGrids :: GLfloat -> GLfloat -> IORef Snake -> IO ()
 renderGrids ws s snake
   | ws <= 0 = return ()
   | otherwise = do
       snake' <- get snake
-      let body = S.body snake'
       sequence_ [renderGrid (Grid { r = r, c = c, s = scale }) snake' | r <- [0..ng-1], c <- [0..ng-1]]
   where ng = ws / s
         scale = s / ws
