@@ -33,15 +33,17 @@ main = do
   }
 
   -- initialize the first bean
+  initialBeanLocation <- getBeanLocation (ng, ng) $ body snake
+
   let bean = Bean {
-    beanLocation = undefined,
+    beanLocation = initialBeanLocation,
     beanColor = Color3 0 1 (0 :: GLfloat)
   }
 
   -- initialize game (IORef)
   currentTime <- getCurrentTime
   game <- newIORef $ Game {
-    defaultSpeed = 1,
+    defaultSpeed = 0.2,
     lastUpdateTime = currentTime,
     hasnake = snake,
     currentBean = bean

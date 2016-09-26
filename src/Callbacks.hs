@@ -13,8 +13,7 @@ import Snake
 display :: GLfloat -> GLfloat -> IORef Game -> IO ()
 display ws s game = do
   clear [ColorBuffer]
-  g <- get game
-  renderGrids ws s $ hasnake g
+  renderGame ws s game
   flush
 
 -- keyboard and mouse callback
@@ -42,7 +41,7 @@ idle g = do
       let snake' = update $ hasnake game
       -- update game
       g $= game {
-        defaultSpeed = 1,
+        defaultSpeed = 0.2,
         lastUpdateTime = currentTime,
         hasnake = snake'
       }
