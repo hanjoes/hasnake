@@ -46,7 +46,9 @@ main = do
     defaultSpeed = 0.2,
     lastUpdateTime = currentTime,
     hasnake = snake,
-    currentBean = bean
+    currentBean = bean,
+    gameWindowSize = 1000,
+    gridSize = 10
   }
 
   -- register callbacks

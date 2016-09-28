@@ -13,5 +13,7 @@ data Game = Game {
   defaultSpeed :: NominalDiffTime,
   lastUpdateTime :: UTCTime,
   hasnake :: Snake,
-  currentBean :: Bean -- there is always a bean
+  currentBean :: Bean, -- there is always a bean
+  gameWindowSize :: GLsizei,
+  gridSize :: GLsizei
 }
