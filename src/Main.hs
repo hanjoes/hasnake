@@ -47,13 +47,13 @@ main = do
     lastUpdateTime = currentTime,
     hasnake = snake,
     currentBean = bean,
-    gameWindowSize = 1000,
-    gridSize = 10
+    gameWindowSize = fromIntegral ws,
+    gridSize = fromIntegral gs
   }
 
   -- register callbacks
   -- reshapeCallback $= Just reshape
-  displayCallback $= display (fromIntegral ws) (fromIntegral gs) game
+  displayCallback $= display game
   keyboardMouseCallback $= (Just $ keyboardMouse game)
   idleCallback $= (Just $ idle game)
   mainLoop

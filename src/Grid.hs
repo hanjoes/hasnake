@@ -49,30 +49,28 @@ renderGrid g  = do
   vertex $ Vertex2 (left g) (bottom g)
 
 -- Render all grids given window size and grid scale.
-renderGame :: GLfloat -> GLfloat -> IORef Game -> IO ()
-renderGame ws s game
-  | ws <= 0 = return ()
-  | otherwise = do
+renderGame :: IORef Game -> IO ()
+renderGame game = do
       game' <- get game
-      mapM_ renderGrid $ genGrids ws s ng game'
-  where ng = ws / s
-        scale = s / ws
+      mapM_ renderGrid $ genGrids game'
 
 -- Helper function to get all grids to render
-genGrids :: GLfloat -> GLfloat -> GLfloat -> Game -> [Grid]
-genGrids ws s numGrids game = do
+genGrids :: Game -> [Grid]
+genGrids game = do
+  let ws = (fromIntegral $ gameWindowSize game :: GLfloat)
+  let gs = fromIntegral $ gridSize game
+  let ng = ws / gs
+  let scale = gs / ws
   let snake = hasnake game
   let bean = currentBean game
-  row <- [0..numGrids - 1]
-  col <- [0..numGrids - 1]
+  row <- [0..ng - 1]
+  col <- [0..ng - 1]
   return Grid {
     r = row,
     c = col,
     s = scale,
     gridColor = pickColor (row, col) snake bean
   }
-  where ng = ws / s
-        scale = s / ws
 
 -- Pick color for the snake body.
 pickColor :: HasnakePos -> Snake -> Bean -> Color3 GLfloat

@@ -10,10 +10,10 @@ import Utils
 import Snake
 
 -- Takes ng as number of total grids to render.
-display :: GLfloat -> GLfloat -> IORef Game -> IO ()
-display ws s game = do
+display :: IORef Game -> IO ()
+display game = do
   clear [ColorBuffer]
-  renderGame ws s game
+  renderGame game
   flush
 
 -- keyboard and mouse callback
