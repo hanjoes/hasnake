@@ -57,10 +57,8 @@ renderGame game = do
 -- Helper function to get all grids to render
 genGrids :: Game -> [Grid]
 genGrids game = do
-  let ws = (fromIntegral $ gameWindowSize game :: GLfloat)
-  let gs = fromIntegral $ gridSize game
-  let ng = ws / gs
-  let scale = gs / ws
+  let ng = numGrids game
+  let scale = gridScale game
   let snake = hasnake game
   let bean = currentBean game
   row <- [0..ng - 1]
@@ -68,7 +66,7 @@ genGrids game = do
   return Grid {
     r = row,
     c = col,
-    s = scale,
+    s = scale ,
     gridColor = pickColor (row, col) snake bean
   }
 

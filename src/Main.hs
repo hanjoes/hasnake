@@ -29,7 +29,8 @@ main = do
   let snake = Snake {
     body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
     dir = HSRight,
-    bodyColor = Color3 1 0 (0 :: GLfloat)
+    bodyColor = Color3 1 0 (0 :: GLfloat),
+    isAlive = True
   }
 
   -- initialize the first bean

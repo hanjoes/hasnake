@@ -34,13 +34,17 @@ keyboardMouse _ _ _ _ _ = return ()
 idle :: IORef Game -> IO ()
 idle g = do
   game <- get g
+
+  -- check game status
+
   flag <- shouldUpdate game
   case flag of
     True -> do
       currentTime <- getCurrentTime
       let snake' = update $ hasnake game
+
       -- update game
-      g $= game {
+      g $= (checkGame game) {
         defaultSpeed = 0.2,
         lastUpdateTime = currentTime,
         hasnake = snake'

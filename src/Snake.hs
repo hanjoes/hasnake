@@ -1,15 +1,25 @@
 -- module Snake (Snake (body, dir, clr), Direction, HasnakePos) where
-module Snake (Snake (..), update, turnSnake) where
+module Snake (Snake (..), update, turnSnake, hasnakeGrow, hasnakeDie, snakeHead) where
 
 import Graphics.UI.GLUT
 
 import Utils
 
-data Snake = Snake { body :: [HasnakePos], dir :: HasnakeDir, bodyColor :: Color3 GLfloat }
+data Snake = Snake { body :: [HasnakePos],
+                     dir :: HasnakeDir,
+                     bodyColor :: Color3 GLfloat,
+                     isAlive :: Bool
+                   }
 
--- After eaten a bean, update the snake
+-- update the snake by direction
 update :: Snake -> Snake
 update s = s { body = updateBody (body s) (dir s) }
+
+hasnakeDie :: Snake -> Snake
+hasnakeDie s = undefined
+
+hasnakeGrow :: Snake -> Snake
+hasnakeGrow s = undefined
 
 -- functions used to turn the snake
 turnSnake :: HasnakeDir -> Snake -> Snake
@@ -28,7 +38,7 @@ shiftUp (r, c) = (r - 1, c)
 shiftDown :: HasnakePos -> HasnakePos
 shiftDown (r, c) = (r + 1, c)
 
--- Helper function to update the whole body.
+-- helper function to update the whole body.
 updateBody :: [HasnakePos] -> HasnakeDir -> [HasnakePos]
 updateBody [] _ = []
 updateBody (c:cs) dir = updatedHead:(updateBody cs $ lookforDir c cs)
@@ -42,3 +52,7 @@ updateBody (c:cs) dir = updatedHead:(updateBody cs $ lookforDir c cs)
           | shiftRight c' `elem` cs'  = HSLeft
           | shiftUp c' `elem` cs'  = HSDown
           | otherwise = HSUp
+
+-- Helper function to get snake head
+snakeHead :: Snake -> HasnakePos
+snakeHead snake = case body snake of p:ps -> p
