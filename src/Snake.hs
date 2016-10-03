@@ -1,5 +1,5 @@
 -- module Snake (Snake (body, dir, clr), Direction, HasnakePos) where
-module Snake (Snake (..), update, turnSnake, hasnakeGrow, hasnakeDie, snakeHead) where
+module Snake (Snake (..), update, turnSnake, hasnakeGrow, hasnakeDie, snakeHead, initializeSnake) where
 
 import Graphics.UI.GLUT
 
@@ -10,6 +10,14 @@ data Snake = Snake { body :: [HasnakePos],
                      bodyColor :: Color3 GLfloat,
                      isAlive :: Bool
                    }
+
+initializeSnake :: GLfloat -> Snake
+initializeSnake ng = Snake {
+    body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
+    dir = HSRight,
+    bodyColor = Color3 1 0 (0 :: GLfloat),
+    isAlive = True
+  }
 
 -- update the snake by direction
 update :: Snake -> Snake

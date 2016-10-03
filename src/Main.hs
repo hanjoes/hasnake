@@ -26,12 +26,7 @@ main = do
   win <- createWindow "Hasnake"
 
   -- initialize snake
-  let snake = Snake {
-    body = [(ng / 2, ng / 2), (ng / 2, ng / 2 + 1)],
-    dir = HSRight,
-    bodyColor = Color3 1 0 (0 :: GLfloat),
-    isAlive = True
-  }
+  let snake = initializeSnake ng
 
   -- initialize the first bean
   initialBeanLocation <- getBeanLocation (ng, ng) $ body snake
