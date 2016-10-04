@@ -41,13 +41,14 @@ idle g = do
   case flag of
     True -> do
       let newGame = checkGame game
+      let newSnake = hasnake newGame
 
       currentTime <- getCurrentTime
       g $= newGame {
         defaultSpeed = 0.2,
         lastUpdateTime = currentTime,
-        hasnake = case isAlive $ hasnake newGame of
-                    True -> update $ hasnake newGame
+        hasnake = case isAlive newSnake of
+                    True -> update newSnake
                     False -> hasnakeDie $ numGrids newGame
       }
     False -> return ()
