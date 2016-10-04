@@ -40,14 +40,15 @@ idle g = do
   flag <- shouldUpdate game
   case flag of
     True -> do
-      currentTime <- getCurrentTime
-      let snake' = update $ hasnake game
+      let newGame = checkGame game
 
-      -- update game
-      g $= (checkGame game) {
+      currentTime <- getCurrentTime
+      g $= newGame {
         defaultSpeed = 0.2,
         lastUpdateTime = currentTime,
-        hasnake = snake'
+        hasnake = case isAlive $ hasnake newGame of
+                    True -> update $ hasnake newGame
+                    False -> hasnakeDie $ numGrids newGame
       }
     False -> return ()
   postRedisplay Nothing

@@ -64,7 +64,7 @@ headOnBean game snake = (snakeHead snake) == (beanLocation $ currentBean game)
 -- helper function to check whether snake is still in boarder
 isOutOfBorder :: Game -> Snake -> Bool
 isOutOfBorder game snake = case snakeHead snake of
-  (row, col) -> and [row <= maxRow game,
-                     row >= minRow game,
-                     col <= maxCol game,
-                     col >= minCol game]
+  (row, col) -> or [row > maxRow game,
+                     row < minRow game,
+                     col > maxCol game,
+                     col < minCol game]

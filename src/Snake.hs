@@ -23,8 +23,8 @@ initializeSnake ng = Snake {
 update :: Snake -> Snake
 update s = s { body = updateBody (body s) (dir s) }
 
-hasnakeDie :: Snake -> Snake
-hasnakeDie s = undefined
+hasnakeDie :: GLfloat -> Snake
+hasnakeDie ng = initializeSnake ng
 
 hasnakeGrow :: Snake -> Snake
 hasnakeGrow s = undefined
