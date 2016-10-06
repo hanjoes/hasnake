@@ -7,19 +7,19 @@ type HasnakePos = (GLfloat, GLfloat)
 
 data HasnakeDir = HSUp | HSDown | HSLeft | HSRight
 
-getRandomHasnakePos :: HasnakePos -> IO HasnakePos
-getRandomHasnakePos (rowNum, colNum) = do
-  randomRow <- getStdRandom $ randomR (0, rowNum - 1)
-  randomCol <- getStdRandom $ randomR (0, colNum - 1)
+getRandomHasnakePos :: GLfloat -> IO HasnakePos
+getRandomHasnakePos limit = do
+  randomRow <- getStdRandom $ randomR (0, limit - 1)
+  randomCol <- getStdRandom $ randomR (0, limit - 1)
   return (fromIntegral $ truncate randomRow, fromIntegral $ truncate randomCol)
 
 -- Get the bean location, it should not be on the snake's body.
-getBeanLocation :: HasnakePos -> [HasnakePos] -> IO HasnakePos
-getBeanLocation limits excluded = do
-  pos <- getRandomHasnakePos limits
+getBeanLocation :: GLfloat -> [HasnakePos] -> IO HasnakePos
+getBeanLocation limit excluded = do
+  pos <- getRandomHasnakePos limit
   case pos `elem` excluded of
     False -> return pos
-    True -> getBeanLocation limits excluded
+    True -> getBeanLocation limit excluded
 
 -- Get the reversed direction
 reverseDir :: HasnakeDir -> HasnakeDir

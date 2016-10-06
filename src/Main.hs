@@ -29,7 +29,7 @@ main = do
   let snake = initializeSnake ng
 
   -- initialize the first bean
-  initialBeanLocation <- getBeanLocation (ng, ng) $ body snake
+  initialBeanLocation <- getBeanLocation (ng) $ body snake
 
   let bean = Bean {
     beanLocation = initialBeanLocation,

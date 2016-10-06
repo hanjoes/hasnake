@@ -44,7 +44,7 @@ idle g = do
       let newGame = checkGame game
       let newSnake = hasnake newGame
 
-      newBeanLocation <- getBeanLocation (numGrids newGame, numGrids newGame) $ body $ hasnake newGame
+      newBeanLocation <- getBeanLocation (numGrids newGame) $ body $ hasnake newGame
       let newBean = currentBean newGame
 
       currentTime <- getCurrentTime
