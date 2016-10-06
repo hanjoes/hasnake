@@ -33,7 +33,8 @@ main = do
 
   let bean = Bean {
     beanLocation = initialBeanLocation,
-    beanColor = Color3 0 1 (0 :: GLfloat)
+    beanColor = Color3 0 1 (0 :: GLfloat),
+    eaten = False
   }
 
   -- initialize game (IORef)

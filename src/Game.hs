@@ -19,15 +19,12 @@ data Game = Game {
 }
 
 checkGame :: Game -> Game
-checkGame game = game { hasnake = hasnakeCheck game $ hasnake game }
-
--- check snake status and decide next step
--- possible next steps are: Grow, Die
-hasnakeCheck :: Game -> Snake -> Snake
-hasnakeCheck game snake
-  | isOutOfBorder game snake = snake { isAlive = False }
-  | headOnBean game snake = hasnakeGrow snake
-  | otherwise = snake
+checkGame game
+  | isOutOfBorder game snake = game { hasnake = snake { isAlive = False } }
+  | headOnBean game snake = game { hasnake = hasnakeGrow snake, currentBean = bean { eaten = True } }
+  | otherwise = game { hasnake = snake }
+  where snake = hasnake game
+        bean = currentBean game
 
 -- Minimum row is always 0
 minRow :: Game -> GLfloat

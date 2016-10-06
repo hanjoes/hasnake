@@ -8,6 +8,7 @@ import Grid
 import Game
 import Utils
 import Snake
+import Bean
 
 -- Takes ng as number of total grids to render.
 display :: IORef Game -> IO ()
@@ -43,13 +44,19 @@ idle g = do
       let newGame = checkGame game
       let newSnake = hasnake newGame
 
+      newBeanLocation <- getBeanLocation (numGrids newGame, numGrids newGame) $ body $ hasnake newGame
+      let newBean = currentBean newGame
+
       currentTime <- getCurrentTime
       g $= newGame {
         defaultSpeed = 0.2,
         lastUpdateTime = currentTime,
         hasnake = case isAlive newSnake of
                     True -> update newSnake
-                    False -> hasnakeDie $ numGrids newGame
+                    False -> hasnakeDie $ numGrids newGame,
+        currentBean = case eaten newBean of
+                        True -> newBean { beanLocation = newBeanLocation, eaten = False }
+                        False -> newBean
       }
     False -> return ()
   postRedisplay Nothing
