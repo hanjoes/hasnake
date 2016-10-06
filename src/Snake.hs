@@ -1,5 +1,7 @@
 -- module Snake (Snake (body, dir, clr), Direction, HasnakePos) where
-module Snake (Snake (..), update, turnSnake, hasnakeGrow, hasnakeDie, snakeHead, initializeSnake) where
+module Snake (Snake (..), update, turnSnake, hasnakeGrow,
+              hasnakeDie, snakeHead, initializeSnake,
+              bodyWithoutHead) where
 
 import Graphics.UI.GLUT
 
@@ -75,6 +77,8 @@ lookforDir p ps
   | otherwise = HSUp
 
 
--- Helper function to get snake head
 snakeHead :: Snake -> HasnakePos
 snakeHead snake = case body snake of p:ps -> p
+
+bodyWithoutHead :: Snake -> [HasnakePos]
+bodyWithoutHead snake = case body snake of p:ps -> ps

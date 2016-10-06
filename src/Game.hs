@@ -20,7 +20,7 @@ data Game = Game {
 
 checkGame :: Game -> Game
 checkGame game
-  | isOutOfBorder game snake = game { hasnake = snake { isAlive = False } }
+  | shouldBeDead game snake = game { hasnake = snake { isAlive = False } }
   | headOnBean game snake = game { hasnake = hasnakeGrow snake, currentBean = bean { eaten = True } }
   | otherwise = game { hasnake = snake }
   where snake = hasnake game
@@ -58,10 +58,10 @@ gridScale game = 1 / numGrids game
 headOnBean :: Game -> Snake -> Bool
 headOnBean game snake = (snakeHead snake) == (beanLocation $ currentBean game)
 
--- helper function to check whether snake is still in boarder
-isOutOfBorder :: Game -> Snake -> Bool
-isOutOfBorder game snake = case snakeHead snake of
+-- helper function to check whether snake is still in border or is not on itself
+shouldBeDead:: Game -> Snake -> Bool
+shouldBeDead game snake = case snakeHead snake of
   (row, col) -> or [row > maxRow game,
                      row < minRow game,
                      col > maxCol game,
-                     col < minCol game]
+                     col < minCol game, (row, col) `elem` (bodyWithoutHead snake)]

@@ -15,7 +15,7 @@ import Utils
 -- Window size.
 ws = 1000
 -- Grid size should always divide the window size.
-gs = 10
+gs = 20
 
 
 main :: IO()
