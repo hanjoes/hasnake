@@ -27,7 +27,21 @@ hasnakeDie :: GLfloat -> Snake
 hasnakeDie ng = initializeSnake ng
 
 hasnakeGrow :: Snake -> Snake
-hasnakeGrow s = undefined
+hasnakeGrow s = s { body = growBody $ body s }
+
+-- Hellper function to append to tail
+growBody:: [HasnakePos] -> [HasnakePos]
+growBody (p:p':[]) = p:p':[(shiftPos growDir p')]
+  where growDir = reverseDir $ lookforDir p [p']
+growBody (p:ps) = p:(growBody ps)
+growBody p = p
+
+-- function to shift a hasnake pos
+shiftPos :: HasnakeDir -> HasnakePos -> HasnakePos
+shiftPos HSUp p = shiftUp p
+shiftPos HSDown p = shiftDown p
+shiftPos HSLeft p = shiftLeft p
+shiftPos HSRight p = shiftRight p
 
 -- functions used to turn the snake
 turnSnake :: HasnakeDir -> Snake -> Snake
@@ -50,16 +64,16 @@ shiftDown (r, c) = (r + 1, c)
 updateBody :: [HasnakePos] -> HasnakeDir -> [HasnakePos]
 updateBody [] _ = []
 updateBody (c:cs) dir = updatedHead:(updateBody cs $ lookforDir c cs)
-  where updatedHead = case dir of
-          HSUp -> shiftUp c
-          HSDown -> shiftDown c
-          HSLeft -> shiftLeft c
-          HSRight -> shiftRight c
-        lookforDir c' cs'
-          | shiftLeft c' `elem` cs'  = HSRight
-          | shiftRight c' `elem` cs'  = HSLeft
-          | shiftUp c' `elem` cs'  = HSDown
-          | otherwise = HSUp
+  where updatedHead = shiftPos dir c
+
+-- Helper function to look for direction given a head and the rest of the body
+lookforDir :: HasnakePos -> [HasnakePos] -> HasnakeDir
+lookforDir p ps
+  | shiftLeft p `elem` ps  = HSRight
+  | shiftRight p `elem` ps  = HSLeft
+  | shiftUp p `elem` ps  = HSDown
+  | otherwise = HSUp
+
 
 -- Helper function to get snake head
 snakeHead :: Snake -> HasnakePos

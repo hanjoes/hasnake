@@ -20,3 +20,10 @@ getBeanLocation limits excluded = do
   case pos `elem` excluded of
     False -> return pos
     True -> getBeanLocation limits excluded
+
+-- Get the reversed direction
+reverseDir :: HasnakeDir -> HasnakeDir
+reverseDir HSUp = HSDown
+reverseDir HSDown = HSUp
+reverseDir HSLeft = HSRight
+reverseDir HSRight = HSLeft
