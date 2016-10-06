@@ -40,7 +40,7 @@ main = do
   -- initialize game (IORef)
   currentTime <- getCurrentTime
   game <- newIORef $ Game {
-    defaultSpeed = 0.2,
+    defaultSpeed = 0.1,
     lastUpdateTime = currentTime,
     hasnake = snake,
     currentBean = bean,

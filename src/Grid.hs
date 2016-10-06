@@ -19,7 +19,7 @@ data Grid = Grid {
 
 -- Padding scale.
 ps :: GLfloat
-ps = 8.0
+ps = 15.0
 
 -- Grid color
 presetColor :: Color3 GLfloat
